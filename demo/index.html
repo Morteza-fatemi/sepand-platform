@@ -1,0 +1,27 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sepand | نمونه نمایشی ساختگی</title><style>
+:root{font-family:Tahoma,Arial,sans-serif;color-scheme:light;--bg:#f4f7fb;--ink:#1b2b42;--card:#fff;--line:#e0e7ef;--blue:#3559ba}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.85}main{max-width:1050px;margin:36px auto;padding:0 18px}header{border-radius:24px;background:linear-gradient(120deg,#233c80,#5173c7);color:#fff;padding:28px}h1{margin:0;font-size:29px}h2{margin:0 0 12px;font-size:21px}.eyebrow{font-size:12px;letter-spacing:.01em;font-weight:700;color:#e4e9ff}.mark{background:#fff3cc;color:#704900;padding:6px 13px;border-radius:99px;font-size:13px;display:inline-block;margin:10px 0}section{margin-top:18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}.card{background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--line);box-shadow:0 5px 22px #2c487010}.metric{font-size:28px;font-weight:750;direction:ltr;text-align:right}button,select{font:inherit;border:1px solid #ccd8e9;border-radius:12px;padding:7px 14px;background:#fff;cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #9cbbff}button.primary{color:white;background:var(--blue)}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid var(--line);text-align:right}th{font-size:13px;color:#5f6b7c}p{margin:6px 0;color:#55677e}.good{color:#12724d}.bad{color:#b34d37}footer{padding:24px 0;font-size:13px;color:#6c7784}.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}strong{color:inherit}@media(max-width:600px){main{margin:10px auto}header{padding:21px}h1{font-size:23px}.card{padding:15px}}
+</style></head><body><main>
+<header><div class="eyebrow">SEPAND · PUBLIC-SAFE WORKFLOW DEMO</div><h1>دموی فرایند سرویس مدرسه</h1><div class="mark">تمام نام‌ها، وضعیت‌ها و مسیرها ساختگی‌اند؛ هیچ دادهٔ کودک یا GPS واقعی وجود ندارد</div><p style="color:#edf3ff">شبیه‌سازی نقش‌ها، درخواست غیبت و تازگی اطلاعات مکان — بدون هیچ اتصال شبکه‌ای.</p></header>
+<section class="controls"><label for="role">نقش نمایشی:</label><select id="role"><option value="parent">ولی دانش‌آموز نمونه</option><option value="driver">رانندهٔ نمونه</option><option value="school">مدرسهٔ نمونه</option></select><button class="primary" id="absent">ثبت غیبت ساختگی</button><button id="location">قدیمی‌کردن موقعیت نمونه</button><button id="reset">بازنشانی</button></section>
+<section class="grid"><article class="card"><h2>اطلاعات سرویس</h2><p><strong>مسیر:</strong> مسیر ساختگی الف</p><p><strong>دانش‌آموز:</strong> شناسهٔ ساختگی S-001</p><p><strong>راننده:</strong> شناسهٔ ساختگی D-001</p><p><strong>وضعیت غیبت:</strong> <strong id="absence">ثبت نشده</strong></p></article>
+<article class="card"><h2>موقعیت و تازگی</h2><p>در این دمو مختصات یا دادهٔ مکان واقعی وجود ندارد.</p><p><strong>آخرین گزارش:</strong> <span id="age">۳۰ ثانیه قبل (ساختگی)</span></p><p><strong>وضعیت:</strong> <span id="freshness" class="good">به‌روز در سناریوی نمونه</span></p></article><article class="card"><h2>محدودهٔ دسترسی</h2><p id="scope"></p><p>این نمایش تنها یک سیاست پیشنهادی برای طراحی است؛ اجرای واقعی مجوزهای سپند را اثبات نمی‌کند.</p></article></section>
+<section class="card"><h2>لاگ تصمیم نمایشی</h2><p id="audit" role="status">درخواستی ثبت نشده است. هیچ سروری فراخوانی نشده.</p></section>
+<footer>Offline synthetic scenario · Not an official Sepand portal · No identifiable children, schools, vehicles or GPS data.</footer></main>
+<script>
+"use strict";
+let state={absent:false,stale:false};
+const role=document.getElementById('role'),out=id=>document.getElementById(id);
+function render(){
+const value=role.value;
+out('absent').disabled=value!=='parent';
+out('absence').textContent=state.absent?'غایب در تاریخ نمونه':'ثبت نشده';
+out('age').textContent=state.stale?'۲۰ دقیقه قبل (ساختگی)':'۳۰ ثانیه قبل (ساختگی)';
+out('freshness').textContent=state.stale?'دادهٔ قدیمی؛ زنده نیست':'به‌روز در سناریوی نمونه';out('freshness').className=state.stale?'bad':'good';
+out('scope').textContent=value==='parent'?'فقط دانش‌آموز منتسب به ولی (فرضی)':value==='driver'?'فقط مسیر تخصیص‌یافته (فرضی)':'فقط دادهٔ مدرسهٔ دارای مجوز (فرضی)';
+}
+role.addEventListener('change',()=>{out('audit').textContent='نقش تغییر کرد؛ این فقط تغییر نمایشی است.';render()});
+out('absent').addEventListener('click',()=>{if(role.value!=='parent')return;state.absent=!state.absent;out('audit').textContent='درخواست غیبت صرفاً در حافظهٔ همین صفحه تغییر کرد.';render()});
+out('location').addEventListener('click',()=>{state.stale=!state.stale;out('audit').textContent='تازگی موقعیت ساختگی تغییر کرد؛ مختصاتی وجود ندارد.';render()});
+out('reset').addEventListener('click',()=>{state={absent:false,stale:false};role.value='parent';out('audit').textContent='بازنشانی انجام شد.';render()});
+render();
+</script></body></html>
