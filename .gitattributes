@@ -1,0 +1,4 @@
+# This is a documentation/portfolio repository, not the private application source.
+# Exclude auxiliary CI scripts and synthetic demo assets from GitHub language stats.
+tools/** linguist-documentation
+demo/** linguist-documentation
